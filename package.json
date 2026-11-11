@@ -1,0 +1,58 @@
+{
+  "name": "dsh-plugin-discord-operator",
+  "version": "0.1.0",
+  "description": "Operador de Discord para DeepSeek Harness: lista canales y mensajes, envía y edita mensajes y sube archivos con confirmación, lista blanca de canales y auditoría; nunca lee DMs ni expone el token (mcp__discord__*).",
+  "type": "module",
+  "license": "MIT",
+  "author": "thegabopacheco-sudo",
+  "homepage": "https://github.com/thegabopacheco-sudo/dsh-plugin-discord-operator#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thegabopacheco-sudo/dsh-plugin-discord-operator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thegabopacheco-sudo/dsh-plugin-discord-operator/issues"
+  },
+  "keywords": [
+    "deepseek",
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "mcp",
+    "discord",
+    "bot",
+    "community"
+  ],
+  "main": "./dist/server.mjs",
+  "files": [
+    "dist/",
+    "docs/",
+    "cordis.patch.yml",
+    "scripts/postinstall.mjs",
+    "README.md",
+    "README.en.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build:bundle": "esbuild server.mjs --bundle --platform=node --format=esm --target=node20 --outfile=dist/server.mjs",
+    "prepack": "npm run build:bundle",
+    "postinstall": "node scripts/postinstall.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/server": "2.2.0",
+    "esbuild": "0.28.2",
+    "zod": "4.4.3"
+  }
+}

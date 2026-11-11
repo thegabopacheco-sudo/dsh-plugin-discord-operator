@@ -1,0 +1,27 @@
+# dsh-plugin-discord-operator — capa bundle de DSH.
+#
+# Inserta una fila del cliente MCP oficial (@deepseek-ai/dsh-mcp-client) que
+# lanza el operador de Discord como "discord". Sus tools aparecen como:
+#
+#     mcp__discord__status    mcp__discord__send
+#     mcp__discord__channels  mcp__discord__edit
+#     mcp__discord__messages  mcp__discord__upload
+#
+# El runtime vive en <DSH_HOME>/plugins/discord-operator (postinstall).
+# El token NO se guarda en este archivo: se toma de la variable de entorno del
+# host (DISCORD_BOT_TOKEN) o de <DSH_HOME>/discord-operator/config.json.
+- insert:
+    - id: mcp-discord-operator
+      name: '@deepseek-ai/dsh-mcp-client'
+      config:
+        serverName: discord
+        transport: stdio
+        command: !!js process.execPath
+        args:
+          - !!js "(process.env.DSH_HOME && process.env.DSH_HOME.trim() !== '' ? process.env.DSH_HOME : (process.env.USERPROFILE || process.env.HOME || '') + '/.dsh') + '/plugins/discord-operator/server.mjs'"
+        env:
+          RUN_AS_NODE: '1'
+          ELECTRON_RUN_AS_NODE: '1'
+          DISCORD_BOT_TOKEN: !!js process.env.DISCORD_BOT_TOKEN || ''
+        failOnStartupError: false
+        toolCallTimeoutMs: 60000
